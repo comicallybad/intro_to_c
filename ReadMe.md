@@ -1,4 +1,4 @@
-Repo For Comp Sci C++.
+Repo For Intro To Comp Sci With C.
 1. Git clone
 2. Install extensions "c/c++" and "vscode-pdf" for VSCode (bottom button on left panel)
 3. Open "intro_to_c" folder with VSCode

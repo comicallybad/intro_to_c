@@ -15,3 +15,8 @@ FOR MAC
 HOW TO RUN THE CODE
 1. Use "g++ *.c -o main.exe"
 2. On windows just type in terminal "main.exe" on mac type "./main.exe"
+
+TO EASILY ACCESS YOUR VM:
+1. Open Cisco Anyconnect and connect to https://secure.vpn.ucf.edu and login
+2. Enter your NID into the login.bat file in project directory and save
+3. In the project directory run "login.bat" and you will be prompted to enter your password

@@ -2,7 +2,7 @@ Repo For Intro To Comp Sci With C.
 1. Git clone
 2. Install extensions "c/c++" and "vscode-pdf" for VSCode (bottom button on left panel)
 3. Open "intro_to_c" folder with VSCode
-4. Type "cd {folder name ex: Array Sorting or on mac: Array\ Sorting}"
+4. Type "cd {folder name ex: Week 1 or on mac: Week\ 1} then cd {next folder name ex: cd Friday}"
 
 FOR WINDOWS
 1. Install mingw, mark C++ compilers for installation

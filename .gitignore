@@ -1,4 +1,5 @@
 .vscode
+./login.bat
 /**/*.out
 /**/*.exe
 /**/*.rar

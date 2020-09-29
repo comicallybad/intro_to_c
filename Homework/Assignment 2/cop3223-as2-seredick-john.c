@@ -59,6 +59,8 @@ int main(void)
     double a;
     double b;
     double c;
+    char again[128];
+
     printf("What is your a value? ");
     fgets(a_buffer, 127, stdin);
     a = atof(a_buffer);
@@ -101,4 +103,14 @@ int main(void)
             printf("The roots are: x=%f, and x=%f", x1, x2);
         }
     }
+    printf("\nWould you like to compute another? y or n : ");
+    fgets(again, 127, stdin);
+
+    if (again[0] == 'y')
+    {
+        printf("\n");
+        main();
+    }
+
+    return 0;
 }

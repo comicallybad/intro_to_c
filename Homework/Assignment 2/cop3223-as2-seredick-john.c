@@ -69,28 +69,36 @@ int main(void)
     fgets(c_buffer, 127, stdin);
     c = atof(c_buffer);
 
-    //Get and print discriminant
-    double discriminant = get_discriminant(a, b, c);
-    printf("The discriminant is: %f\n", discriminant);
-
-    //Imaginary roots simplified
-    if (discriminant < 0)
+    if (a == 0)
     {
-        printf("The roots are: x=(%f+i*%f), and x=(%f-i*%f)",
-               simplify_b_imaginary(a, b), simplify_discriminant_imaginary(discriminant, a),
-               simplify_b_imaginary(a, b), simplify_discriminant_imaginary(discriminant, a));
+        double x = (-1 * c) / b;
+        printf("The root is x=%f", x);
     }
-    //1 Root
-    else if (discriminant == 0)
-    {
-        double x = check_plus_quadratic(a, b, discriminant);
-        printf("The root is: x=%f", x);
-    }
-    //2 Roots
     else
     {
-        double x1 = check_plus_quadratic(a, b, discriminant);
-        double x2 = check_minus_quadratic(a, b, discriminant);
-        printf("The roots are: x=%f, and x=%f", x1, x2);
+        //Get and print discriminant
+        double discriminant = get_discriminant(a, b, c);
+        printf("The discriminant is: %f\n", discriminant);
+
+        //Imaginary roots simplified
+        if (discriminant < 0)
+        {
+            printf("The roots are: x=(%f+i*%f), and x=(%f-i*%f)",
+                   simplify_b_imaginary(a, b), simplify_discriminant_imaginary(discriminant, a),
+                   simplify_b_imaginary(a, b), simplify_discriminant_imaginary(discriminant, a));
+        }
+        //1 Root
+        else if (discriminant == 0)
+        {
+            double x = check_plus_quadratic(a, b, discriminant);
+            printf("The root is: x=%f", x);
+        }
+        //2 Roots
+        else
+        {
+            double x1 = check_plus_quadratic(a, b, discriminant);
+            double x2 = check_minus_quadratic(a, b, discriminant);
+            printf("The roots are: x=%f, and x=%f", x1, x2);
+        }
     }
 }

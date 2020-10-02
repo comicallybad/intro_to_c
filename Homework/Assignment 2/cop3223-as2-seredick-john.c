@@ -3,6 +3,22 @@
 #include <stdio.h>
 #include <math.h>
 #include <strings.h>
+#include <string.h>
+
+void remove_crlf(char *s)
+{
+    char *t = s + strlen(s); // t begins at the null sentinel at the end of s.
+    t--;
+    /* t is now at the last character of s - unless s didn't contain any characters, in        
+     which case, t is now *BEFORE* s.  We have to keep checking for that. */
+    /* We repeat until EITHER t slides to the left of s, OR we find a character that is        
+     not a line feed (\n) or a carriage return (\r). */
+    while ((t >= s) && (*t == '\n' || *t == '\r'))
+    {
+        *t = '\0'; // Clobber the character t is pointing at.
+        t--;       // Decrement t.
+    }
+}
 
 //When adding in the quadratic equation
 double check_plus_quadratic(double a, double b, double discriminant)
@@ -59,10 +75,9 @@ int main(void)
     double a;
     double b;
     double c;
-    char again[128];
-    again[0] = 'y';
+    char again[128] = "yes";
 
-    while (again[0] == 'y')
+    while (stricmp(again, "yes") == 0)
     {
         printf("What is your a value? ");
         fgets(a_buffer, 127, stdin);
@@ -76,8 +91,15 @@ int main(void)
 
         if (a == 0)
         {
-            double x = (-1 * c) / b;
-            printf("The root is x=%f", x);
+            if (b == 0)
+            {
+                printf("No solution");
+            }
+            else
+            {
+                double x = (-1 * c) / b;
+                printf("The root is x=%f", x);
+            }
         }
         else
         {
@@ -106,12 +128,17 @@ int main(void)
                 printf("The roots are: x=%f, and x=%f", x1, x2);
             }
         }
-        printf("\nWould you like to compute another? y or n : ");
+        printf("\nWould you like to compute another? yes or no : ");
         fgets(again, 127, stdin);
+        remove_crlf(again);
 
-        if (again[0] == 'y')
+        if (stricmp(again, "yes") == 0)
         {
             printf("\n");
+        }
+        else if (stricmp(again, "no") == 0)
+        {
+            printf("Okay, sorry to see you go..");
         }
     }
 

@@ -5,6 +5,8 @@
 #include <strings.h>
 #include <string.h>
 
+#define strcasecmp srticmp
+
 void remove_crlf(char *s)
 {
     char *t = s + strlen(s); // t begins at the null sentinel at the end of s.

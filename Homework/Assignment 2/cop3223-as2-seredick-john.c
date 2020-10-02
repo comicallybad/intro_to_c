@@ -5,7 +5,9 @@
 #include <strings.h>
 #include <string.h>
 
+#ifdef _MSC_BUILD
 #define strcasecmp srticmp
+#endif
 
 void remove_crlf(char *s)
 {

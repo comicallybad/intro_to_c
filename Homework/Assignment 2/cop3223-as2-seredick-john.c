@@ -5,10 +5,6 @@
 #include <strings.h>
 #include <string.h>
 
-#ifdef _MSC_BUILD
-#define strcasecmp srticmp
-#endif
-
 void remove_crlf(char *s)
 {
     char *t = s + strlen(s); // t begins at the null sentinel at the end of s.
@@ -81,7 +77,7 @@ int main(void)
     double c;
     char again[128] = "yes";
 
-    while (stricmp(again, "yes") == 0)
+    while (strcasecmp(again, "yes") == 0)
     {
         printf("What is your a value? ");
         fgets(a_buffer, 127, stdin);
@@ -136,11 +132,11 @@ int main(void)
         fgets(again, 127, stdin);
         remove_crlf(again);
 
-        if (stricmp(again, "yes") == 0)
+        if (strcasecmp(again, "yes") == 0)
         {
             printf("\n");
         }
-        else if (stricmp(again, "no") == 0)
+        else if (strcasecmp(again, "no") == 0)
         {
             printf("Okay, sorry to see you go..");
         }

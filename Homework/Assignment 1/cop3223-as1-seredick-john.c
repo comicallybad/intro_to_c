@@ -38,7 +38,7 @@ double simplify_discriminant_imaginary(double discriminant, double a)
 {
     double simplified;
 
-    simplified = (-1 * discriminant) / (2 * a);
+    simplified = sqrt((-1 * discriminant)) / (2 * a);
 
     return simplified;
 }

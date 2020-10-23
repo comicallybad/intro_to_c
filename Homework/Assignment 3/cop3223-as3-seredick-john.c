@@ -36,7 +36,7 @@ double get_slope(double x1, double y1, double x2, double y2)
    //sope = x2-x1/y2-y1
    double slope;
 
-   slope = (x2 - x1) / (y2 - y1);
+   slope = (y2 - y1) / (x2 - x1);
 
    return slope;
 }
@@ -53,74 +53,17 @@ double get_intercept(double x1, double y1, double x2, double y2)
    return intercept;
 }
 
-double compute_y_value(double slope, double intercept, double *xValues, double *yValues, double increment)
+double compute_y_value(double slope, double intercept, double x)
 {
    //Making user of Y=mx+b
-   double max = 0;
-   int counter = 0;
+   double y;
 
-   if (increment == 1)
-   {
-      max = increment * 10;
-      printf("Max: %lf Increment: %lf\n", max, increment);
-      for (double i = 0.0; i <= max; i++)
-      {
-         xValues[counter] = i;
-         yValues[counter] = ((slope * xValues[counter]) + intercept);
-         printf("x: %05.2lf ", i);
-         printf("y: %05.2lf\n", (slope * xValues[counter]) + intercept);
-         counter++;
-      }
-   }
-   else if (increment == -1)
-   {
-      max = increment * 10;
-      printf("Max: %lf Increment: %lf\n", max, increment);
-      for (double i = 0.0; i >= max; i--)
-      {
-         xValues[counter] = i;
-         yValues[counter] = ((slope * xValues[counter]) + intercept);
-         printf("x: %06.2lf ", i);
-         printf("y: %06.2lf\n", (slope * xValues[counter]) + intercept);
-         counter++;
-      }
-   }
-   else if (increment == 10)
-   {
-      printf("Max: %lf Increment: %lf\n", max, increment);
-      max = 1000000.0;
-      xValues[counter] = 0.0;
-      yValues[counter] = intercept;
-      counter++;
-      for (double i = 1.0; i <= max; i *= increment)
-      {
-         xValues[counter] = i;
-         yValues[counter] = ((slope * xValues[counter]) + intercept);
-         printf("x: %10.2E ", i);
-         printf("y: %10.2E\n", (slope * xValues[counter]) + intercept);
-         counter++;
-      }
-   }
-   else if (increment == 0.1)
-   {
-      printf("Max: %lf Increment: %lf\n", max, increment);
-      max = 0.00001;
-      xValues[counter] = 0.0;
-      yValues[counter] = intercept;
-      counter++;
-      for (double i = 1.0; i >= max; i *= increment)
-      {
-         xValues[counter] = i;
-         yValues[counter] = ((slope * xValues[counter]) + intercept);
-         printf("x: %10.2E ", i);
-         printf("y: %10.2E\n", (slope * xValues[counter]) + intercept);
-         counter++;
-      }
-   }
-   return counter;
+   y = (slope * x) + intercept;
+
+   return y;
 }
 
-void output_to_file(char *title, double x1, double y1, double x2, double y2, double *xValues, double *yValues)
+void output_to_file(char *title, double x1, double y1, double x2, double y2, double *xValues, double *yValues, int n)
 {
    double counter;
    //Open output file
@@ -137,52 +80,19 @@ void output_to_file(char *title, double x1, double y1, double x2, double y2, dou
    //Go through the arrays and print out the coordinates, slope, and intecept
    //Also %2.2lf to shorten to only 2 decimals
    fprintf(ofp, "Points Given: \n");
-   fprintf(ofp, "(%2.2lf,%2.2lf),(%2.2lf,%2.2lf)\n", x1, y1, x2, y2);
-   fprintf(ofp, "Slope: %2.2lf\n", slope);
-   fprintf(ofp, "Intercept: %2.2lf\n", intercept);
+   fprintf(ofp, "(%02.2lf,%2.2lf), (%2.2lf,%2.2lf)\n", x1, y1, x2, y2);
+   fprintf(ofp, "Slope: %2.4lf\n", slope);
+   fprintf(ofp, "Intercept: %2.4lf\n", intercept);
    fprintf(ofp, "\n"); //to make it cleaner :)
-   fprintf(ofp, "Computed Points: \n");
+   fprintf(ofp, "Here are the computed y values from the inputted file.\n");
 
-   fprintf(ofp, "Values from the line with an increment of 1\n");
-   counter = compute_y_value(slope, intercept, xValues, yValues, 1.0);
-
-   for (int i = 0; i < counter; i++)
+   for (int i = 0; i < n; i++)
    {
-      fprintf(ofp, "(%05.2lf,%05.2lf)\n", xValues[i], yValues[i]);
+      yValues[i] = compute_y_value(slope, intercept, xValues[i]);
+      fprintf(ofp, "(%014.5lf, %014.5lf)\n", xValues[i], yValues[i]);
    }
 
    printf("\n");
-   fprintf(ofp, "\n");
-   fprintf(ofp, "Values from the line with an increment of -1\n");
-
-   counter = compute_y_value(slope, intercept, xValues, yValues, -1.0);
-
-   for (int i = 0; i < counter; i++)
-   {
-      fprintf(ofp, "(%06.2lf,%06.2lf)\n", xValues[i], yValues[i]);
-   }
-
-   printf("\n");
-   fprintf(ofp, "\n");
-   fprintf(ofp, "Values from the line with increments of a times 10 multiplier\n");
-
-   counter = compute_y_value(slope, intercept, xValues, yValues, 10.0);
-
-   for (int i = 0; i < counter; i++)
-   {
-      fprintf(ofp, "(%10.2E,%10.2E)\n", xValues[i], yValues[i]);
-   }
-
-   printf("\n");
-   fprintf(ofp, "\n");
-   fprintf(ofp, "Values from the line with increments of a times 0.1 multiplier\n");
-
-   counter = compute_y_value(slope, intercept, xValues, yValues, 0.1);
-
-   for (int i = 0; i < counter; i++)
-   {
-      fprintf(ofp, "(%10.2E,%10.2E)\n", xValues[i], yValues[i]);
-   }
 
    fclose(ofp);
 }
@@ -203,23 +113,33 @@ int main(void)
    //Get the title on the first line
    fgets(title, 255, ifp);
    remove_crlf(title);
-   printf("%s.\n", title);
+   printf("%s\n", title);
 
-   //Start counter at 0
-   int n = 0;
-
+   //Get's the two points
    fgets(buf, 255, ifp);
-   sscanf(buf, "(%lf,%lf),(%lf,%lf)", &x1, &y1, &x2, &y2);
+   sscanf(buf, "%lf, %lf", &x1, &y1);
+   fgets(buf, 255, ifp);
+   sscanf(buf, "%lf, %lf", &x2, &y2);
    printf("(%lf,%lf),(%lf,%lf)\n", x1, y1, x2, y2);
 
    //Print out the slope and intercept using the current coordinates
    printf("Slope: %lf\n", get_slope(x1, y1, x2, y2));
    printf("Intercept: %lf\n", get_intercept(x1, y1, x2, y2));
 
+   //Start counter at 0
+   int n = 0;
+   //Start getting x values
+   while (feof(ifp) == 0)
+   {
+      fscanf(ifp, "%lf", &xValues[n]);
+      printf("%lf\n", xValues[n]);
+      n++;
+   }
+
    fclose(ifp);
 
    //Output to file
-   output_to_file(title, x1, y1, x2, y2, xValues, yValues);
+   output_to_file(title, x1, y1, x2, y2, xValues, yValues, n);
 
    return 0;
 }

@@ -55,24 +55,24 @@ line *write_line(line *new_line)
     fclose(ofp);
 }
 
-//Read the line from the binary file. This won't be used yet I have it here to test
+// Read the line from the binary file. This won't be used yet I have it here to test
 // line *read_line()
 // {
 //     FILE *ifp;
 //     ifp = fopen("as4output-seredick-john.bin", "rb");
 //     line *new_line = malloc(sizeof(line));
-//     fread(new_line, sizeof(line), 1, ifp);
+//     fread(new_line, sizeof(line) * 4, 4, ifp);
 //     return new_line;
 // }
 
 //Prints out the content of the line struct, spacing is to make it stand out in console.
 void print_line(line *new_line)
 {
-    printf("    %s\n", new_line->title);
-    printf("    Slope: %lf intercept: %lf\n", new_line->m, new_line->b);
+    printf("%s\n\n", new_line->title);
+    printf("Slope: %lf intercept: %lf\n\n", new_line->m, new_line->b);
     for (int i = 0; i < 10; i++)
     {
-        printf("    X=%lf, Y=%lf\n", new_line->x[i], new_line->y[i]);
+        printf("    X:\t%6.2lf,   Y:\t%6.2lf\n", new_line->x[i], new_line->y[i]);
     }
 }
 
@@ -120,13 +120,11 @@ int main(void)
         //Get title
         fgets(title, 255, ifp);
         remove_crlf(title);
-        printf("%s\n", title);
 
         //Get slope and intercept
         fgets(buf, 255, ifp);
         remove_crlf(buf);
         sscanf(buf, "%lf %lf", &slope, &intercept);
-        printf("the slope and intercept are: %lf and %lf\n", slope, intercept);
 
         //Get the 10 x values that we will use to compute the y values. Assign into xValues array.
         fgets(buf, 255, ifp);
@@ -138,9 +136,7 @@ int main(void)
         //For each xValue we are going to compute it's yValue by calling compute_y
         for (int j = 0; j < 10; j++)
         {
-            printf("Point X%d is: %lf ", j, xValues[j]);
             yValues[j] = compute_y(xValues[j], slope, intercept);
-            printf("Y%d is: %lf\n", j, yValues[j]);
         }
 
         //Here we are actually assigning the values inside the struct.
@@ -151,6 +147,7 @@ int main(void)
 
         //Write the line struct to the binary file
         write_line(line);
+        printf("\n");
     }
 
     // printf("\n\n");

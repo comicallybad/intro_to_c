@@ -91,7 +91,7 @@ int main(void)
     //Define needed values for the program
     char buf[256];
     char title[64];
-    char n;
+    int n;
     double slope, intercept;
     double xValues[10];
     double yValues[10];

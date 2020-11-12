@@ -27,7 +27,7 @@ struct line_struct
 
 typedef struct line_struct line;
 
-line *new_line(char *title, double slope, double intercept, double *xValues, double *yValues)
+line *new_line(char *title, double slope, double intercept, double *x_values, double *y_values)
 {
     line *new_line = malloc(sizeof(line));
 
@@ -36,11 +36,11 @@ line *new_line(char *title, double slope, double intercept, double *xValues, dou
     new_line->m = slope;
     new_line->b = intercept;
 
-    //This assigns the corresponding x and y values from xValues and yValues to new_line.
+    //This assigns the corresponding x and y values from x_values and y_values to new_line.
     for (int i = 0; i < 10; i++)
     {
-        new_line->x[i] = xValues[i];
-        new_line->y[i] = yValues[i];
+        new_line->x[i] = x_values[i];
+        new_line->y[i] = y_values[i];
     }
 
     return new_line;
@@ -93,8 +93,8 @@ int main(void)
     char title[64];
     int n;
     double slope, intercept;
-    double xValues[10];
-    double yValues[10];
+    double x_values[10];
+    double y_values[10];
 
     //Kinda bad practice to have line *line, but we are defining our structure here
     line *line;
@@ -111,8 +111,8 @@ int main(void)
 
     //Read how many structures we are going to create
     fgets(buf, 255, ifp);
-    remove_crlf(buf);
     sscanf(buf, "%d", &n);
+    printf("%d\n\n", n);
 
     //This will loop through n structsand fill each struct with it's contents
     for (int i = 0; i < n; i++)
@@ -126,21 +126,21 @@ int main(void)
         remove_crlf(buf);
         sscanf(buf, "%lf %lf", &slope, &intercept);
 
-        //Get the 10 x values that we will use to compute the y values. Assign into xValues array.
+        //Get the 10 x values that we will use to compute the y values. Assign into x_values array.
         fgets(buf, 255, ifp);
         remove_crlf(buf);
         sscanf(buf, "%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",
-               &xValues[0], &xValues[1], &xValues[2], &xValues[3], &xValues[4],
-               &xValues[5], &xValues[6], &xValues[7], &xValues[8], &xValues[9]);
+               &x_values[0], &x_values[1], &x_values[2], &x_values[3], &x_values[4],
+               &x_values[5], &x_values[6], &x_values[7], &x_values[8], &x_values[9]);
 
         //For each xValue we are going to compute it's yValue by calling compute_y
         for (int j = 0; j < 10; j++)
         {
-            yValues[j] = compute_y(xValues[j], slope, intercept);
+            y_values[j] = compute_y(x_values[j], slope, intercept);
         }
 
         //Here we are actually assigning the values inside the struct.
-        line = new_line(title, slope, intercept, xValues, yValues);
+        line = new_line(title, slope, intercept, x_values, y_values);
 
         //Print out the line struct
         print_line(line);
@@ -150,6 +150,7 @@ int main(void)
         printf("\n");
     }
 
+    fclose(ifp);
     // printf("\n\n");
     // for (int i = 0; i < n; i++)
     // {

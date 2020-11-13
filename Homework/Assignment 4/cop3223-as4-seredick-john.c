@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <strings.h>
 
 void remove_crlf(char *s)
 {
@@ -22,17 +23,18 @@ void remove_crlf(char *s)
 struct line_struct
 {
     char title[64];
-    double m, b, x[10], y[10];
+    float m, b;
+    double x[10], y[10];
 };
 
 typedef struct line_struct line;
 
-line *new_line(char *title, double slope, double intercept, double *x_values, double *y_values)
+line *new_line(char *new_title, double slope, double intercept, double *x_values, double *y_values)
 {
     line *new_line = malloc(sizeof(line));
 
     //Copy the title, slope and intercept.
-    strcpy(new_line->title, title);
+    strcpy(new_line->title, new_title);
     new_line->m = slope;
     new_line->b = intercept;
 
@@ -44,6 +46,12 @@ line *new_line(char *title, double slope, double intercept, double *x_values, do
     }
 
     return new_line;
+}
+
+//Free up allocated memory
+void dispose_line(line *new_line)
+{
+    free(new_line);
 }
 
 //Write the line struct to a binary file.
@@ -108,8 +116,7 @@ int main(void)
     for (int i = 0; i < n; i++)
     {
         //Get title
-        fgets(title, 255, ifp);
-        remove_crlf(title);
+        fgets(title, 63, ifp);
 
         //Get slope and intercept
         fgets(buf, 255, ifp);
@@ -137,6 +144,9 @@ int main(void)
 
         //Write the line struct to the binary file
         write_line(line);
+
+        dispose_line(line);
+
         printf("\n");
     }
 

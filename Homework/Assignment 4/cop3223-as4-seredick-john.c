@@ -55,16 +55,6 @@ line *write_line(line *new_line)
     fclose(ofp);
 }
 
-// Read the line from the binary file. This won't be used yet I have it here to test
-// line *read_line()
-// {
-//     FILE *ifp;
-//     ifp = fopen("as4output-seredick-john.bin", "rb");
-//     line *new_line = malloc(sizeof(line));
-//     fread(new_line, sizeof(line) * 4, 4, ifp);
-//     return new_line;
-// }
-
 //Prints out the content of the line struct, spacing is to make it stand out in console.
 void print_line(line *new_line)
 {
@@ -151,12 +141,6 @@ int main(void)
     }
 
     fclose(ifp);
-    // printf("\n\n");
-    // for (int i = 0; i < n; i++)
-    // {
-    //     line = read_line();
-    //     print_line(line);
-    // }
 
     return 0;
 }

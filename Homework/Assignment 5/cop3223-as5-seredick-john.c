@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+//Create our line_struct
 struct line_struct
 {
     float m, b;
@@ -9,8 +10,10 @@ struct line_struct
     double *x, *y;
 };
 
+//Define struct as line
 typedef struct line_struct line;
 
+//Make a new line and allocate memory needed for this struct
 line *make_line(float m, float b, int count, double *x, double *y)
 {
     line *l = malloc(sizeof(line) + sizeof(x) + sizeof(y));
@@ -23,6 +26,7 @@ line *make_line(float m, float b, int count, double *x, double *y)
     return l;
 }
 
+//Write to the output file
 void write_line(FILE *ofp, line *l)
 {
     fprintf(ofp, "m: %f\n", l->m);
@@ -35,6 +39,7 @@ void write_line(FILE *ofp, line *l)
     }
 }
 
+//Free up the memory to eliminate memory leak risk
 void dispose_line(line *l, double *x, double *y)
 {
     free(l);
@@ -42,6 +47,7 @@ void dispose_line(line *l, double *x, double *y)
     free(y);
 }
 
+//Print out the line struct to the terminal
 void print_line(line *l)
 {
     printf("m: %f\n", l->m);
@@ -54,6 +60,7 @@ void print_line(line *l)
     }
 }
 
+//Compute for y value given m, x and b
 double find_y(float m, double x, float b)
 {
     return (m * x) + b;

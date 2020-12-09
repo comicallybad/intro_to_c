@@ -317,7 +317,7 @@ void second_step(FILE *ofp, double *store, int count)
 
     if (strcmp(operations, "+") == 0 || strcmp(operations, "addition") == 0)
     {
-      // count++;
+      count++;
       memory = realloc(memory, sizeof(double) * (count + 1));
       second = (first_step(ofp, memory, store, count));
       count = save(memory, count, (first + second));
@@ -327,7 +327,7 @@ void second_step(FILE *ofp, double *store, int count)
     }
     else if (strcmp(operations, "-") == 0 || strcmp(operations, "subtaction") == 0)
     {
-      // count++;
+      count++;
       memory = realloc(memory, sizeof(double) * (count + 1));
       second = (first_step(ofp, memory, store, count));
       count = save(memory, count, (first - second));

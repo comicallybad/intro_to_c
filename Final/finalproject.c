@@ -306,6 +306,7 @@ void second_step(FILE *ofp, double *store, int count)
     {
       first = memory[count];
     }
+    printf("memory[%d] = %lf", count, memory[count]);
     memory = realloc(memory, sizeof(double) * (count + 1));
 
     printf("\nWhat operation do you want to use?\n");
@@ -347,8 +348,9 @@ void second_step(FILE *ofp, double *store, int count)
     }
     else if (strcmp(operations, "/") == 0 || strcmp(operations, "division") == 0)
     {
-      second = (first_step(ofp, memory, store, count));
       count++;
+      memory = realloc(memory, sizeof(double) * (count + 1));
+      second = (first_step(ofp, memory, store, count));
       if (second == 0)
       {
         printf("Error.\n");
@@ -356,8 +358,6 @@ void second_step(FILE *ofp, double *store, int count)
       }
       else
       {
-        count++;
-        memory = realloc(memory, sizeof(double) * (count + 1));
         count = save(memory, count, (first / second));
         fprintf(ofp, "%lf\n", second);
         printf("The result of %2.17lf / %2.17lf = %2.17lf\n", first, second, first / second);

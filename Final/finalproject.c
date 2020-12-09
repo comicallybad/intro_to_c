@@ -39,6 +39,7 @@ double back(FILE *ofp, double *memory, double *store, int count)
     else
     {
       printf("Press b then enter to go back again or press enter to do math with %lf\n", memory[count]);
+      fprintf(ofp, "b\n");
       fgets(temp, 3, stdin);
       remove_crlf(temp);
       count--;
@@ -182,6 +183,14 @@ double log_2_value(double result, FILE *ofp)
   return log2(result);
 }
 
+int save(double *memory, int count, double value)
+{
+  count++;
+  memory = realloc(memory, sizeof(double) * (count + 1));
+  memory[count] = value;
+  return count;
+}
+
 double first_step(FILE *ofp, double *memory, double *store, int count)
 {
   while (1)
@@ -191,6 +200,9 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
     printf("\nPlease input a value: \n");
     fgets(value_char, 127, stdin);
     remove_crlf(value_char);
+
+    fprintf(ofp, "%s\n", value_char);
+
     if (strcmp(value_char, "pi") == 0 || strcmp(value_char, "pie") == 0)
     {
       value = M_PI;
@@ -222,6 +234,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       clear_all(ofp, store);
       printf("All memory has been cleared.\n");
       fprintf(ofp, "All memory has been cleared.\n");
+      first_step(ofp, memory, store, count);
     }
     else if (strcmp(value_char, "b") == 0 || strcmp(value_char, "back") == 0)
     {
@@ -243,6 +256,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
         printf("%lf has been stored in location %d.\n", memory[count], input);
         fprintf(ofp, "%lf has been stored in location %d.\n", memory[count], input);
         store[input] = memory[count];
+        count = save(memory, count, store[input]);
       }
       else
       {
@@ -263,6 +277,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       {
         printf("%lf has been recalled from location %d.\n", store[input], input);
         fprintf(ofp, "%lf has been recalled from location %d.\n", store[input], input);
+        count = save(memory, count, store[input]);
         return store[input];
         break;
       }
@@ -280,14 +295,6 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       break;
     }
   }
-}
-
-int save(double *memory, int count, double value)
-{
-  count++;
-  memory = realloc(memory, sizeof(double) * (count + 1));
-  memory[count] = value;
-  return count;
 }
 
 void second_step(FILE *ofp, double *store, int count)
@@ -336,7 +343,7 @@ void second_step(FILE *ofp, double *store, int count)
       printf("The result of %2.17lf - %2.17lf = %2.17lf\n", first, second, first - second);
       fprintf(ofp, "The result of %2.17lf - %2.17lf = %2.17lf\n", first, second, first - second);
     }
-    else if (strcmp(operations, "x") == 0 || strcmp(operations, "multiplication") == 0)
+    else if (strcmp(operations, "x") == 0 || strcmp(operations, "multiplication") == 0 || strcmp(operations, "*") == 0)
     {
       count++;
       memory = realloc(memory, sizeof(double) * (count + 1));
@@ -461,6 +468,7 @@ void second_step(FILE *ofp, double *store, int count)
       clear_all(ofp, store);
       printf("All memory has been cleared.\n");
       fprintf(ofp, "All memory has been cleared.\n");
+      first_step(ofp, memory, store, count);
     }
     else if (strcmp(operations, "b") == 0 || strcmp(operations, "back") == 0)
     {
@@ -480,6 +488,7 @@ void second_step(FILE *ofp, double *store, int count)
         printf("%lf has been stored in location %d.\n", memory[count], input);
         fprintf(ofp, "%lf has been stored in location %d.\n", memory[count], input);
         store[input] = memory[count];
+        count = save(memory, count, store[input]);
       }
       else
       {
@@ -501,6 +510,7 @@ void second_step(FILE *ofp, double *store, int count)
         printf("%lf has been recalled from location %d.\n", store[input], input);
         fprintf(ofp, "%lf has been recalled from location %d.\n", store[input], input);
         first = store[input];
+        count = save(memory, count, store[input]);
       }
       else
       {

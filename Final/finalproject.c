@@ -209,7 +209,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
     {
       printf("0\n");
       fprintf(ofp, "0\n");
-      return 0;
+      first_step(ofp, memory, store, count);
       break;
     }
     else if (strcmp(value_char, "q") == 0 || strcmp(value_char, "quit") == 0)
@@ -317,7 +317,7 @@ void second_step(FILE *ofp, double *store, int count)
 
     if (strcmp(operations, "+") == 0 || strcmp(operations, "addition") == 0)
     {
-      count++;
+      // count++;
       memory = realloc(memory, sizeof(double) * (count + 1));
       second = (first_step(ofp, memory, store, count));
       count = save(memory, count, (first + second));
@@ -327,7 +327,7 @@ void second_step(FILE *ofp, double *store, int count)
     }
     else if (strcmp(operations, "-") == 0 || strcmp(operations, "subtaction") == 0)
     {
-      count++;
+      // count++;
       memory = realloc(memory, sizeof(double) * (count + 1));
       second = (first_step(ofp, memory, store, count));
       count = save(memory, count, (first - second));
@@ -358,8 +358,7 @@ void second_step(FILE *ofp, double *store, int count)
       {
         count++;
         memory = realloc(memory, sizeof(double) * (count + 1));
-        second = (first_step(ofp, memory, store, count));
-        count = save(memory, count, (first + second));
+        count = save(memory, count, (first / second));
         fprintf(ofp, "%lf\n", second);
         printf("The result of %2.17lf / %2.17lf = %2.17lf\n", first, second, first / second);
         fprintf(ofp, "The result of %2.17lf / %2.17lf = %2.17lf\n", first, second, first / second);
@@ -455,6 +454,7 @@ void second_step(FILE *ofp, double *store, int count)
       first = 0;
       printf("0\n");
       fprintf(ofp, "0\n");
+      first_step(ofp, memory, store, count);
     }
     else if (strcmp(operations, "ca") == 0 || strcmp(operations, "clear all") == 0)
     {

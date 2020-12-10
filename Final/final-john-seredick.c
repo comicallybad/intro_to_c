@@ -183,6 +183,7 @@ double log_2_value(double result, FILE *ofp)
   return log2(result);
 }
 
+//Save value to memory
 int save(double *memory, int count, double value)
 {
   count++;
@@ -191,6 +192,7 @@ int save(double *memory, int count, double value)
   return count;
 }
 
+//First step
 double first_step(FILE *ofp, double *memory, double *store, int count)
 {
   while (1)
@@ -203,6 +205,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
 
     fprintf(ofp, "%s\n", value_char);
 
+    //Allow for pi input
     if (strcmp(value_char, "pi") == 0 || strcmp(value_char, "pie") == 0)
     {
       value = M_PI;
@@ -210,6 +213,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       return value;
       break;
     }
+    //Allow for e input
     else if (strcmp(value_char, "e") == 0)
     {
       value = M_E;
@@ -217,6 +221,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       return value;
       break;
     }
+    //Clear and print 0
     else if (strcmp(value_char, "c") == 0 || strcmp(value_char, "clear") == 0)
     {
       printf("0\n");
@@ -224,11 +229,14 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       first_step(ofp, memory, store, count);
       break;
     }
+    //Exit the program and close file
     else if (strcmp(value_char, "q") == 0 || strcmp(value_char, "quit") == 0)
     {
+      free(memory);
       fclose(ofp);
       exit(0);
     }
+    //Clear all stored variables
     else if (strcmp(value_char, "ca") == 0 || strcmp(value_char, "clear all") == 0)
     {
       clear_all(ofp, store);
@@ -236,12 +244,14 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
       fprintf(ofp, "All memory has been cleared.\n");
       first_step(ofp, memory, store, count);
     }
+    //Call back function to go back through the inputs and outputs
     else if (strcmp(value_char, "b") == 0 || strcmp(value_char, "back") == 0)
     {
       value = back(ofp, memory, store, count - 1);
       return value;
       break;
     }
+    //Store last double in inputted location
     else if (strcmp(value_char, "sto") == 0 || strcmp(value_char, "store") == 0)
     {
       char temp[256];
@@ -264,6 +274,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
         fprintf(ofp, "Error.\n");
       }
     }
+    //Recall double from memory location
     else if (strcmp(value_char, "rcl") == 0 || strcmp(value_char, "recall") == 0)
     {
       char temp[256];
@@ -287,6 +298,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
         fprintf(ofp, "Error.\n");
       }
     }
+    //Take input double
     else
     {
       value = atof(value_char);
@@ -297,6 +309,7 @@ double first_step(FILE *ofp, double *memory, double *store, int count)
   }
 }
 
+//Second step
 void second_step(FILE *ofp, double *store, int count)
 {
   char operations[256];
@@ -305,24 +318,33 @@ void second_step(FILE *ofp, double *store, int count)
   double result;
   double *memory = malloc(sizeof(double));
 
+  //Start by getting first number
   first = (first_step(ofp, memory, store, count));
 
+  //Loop so the program continues
   while (1)
   {
+    //This removed random 0 input's or computations I was getting
     if (memory[count] != 0)
     {
       first = memory[count];
     }
+
+    //For debugging
     printf("memory[%d] = %lf", count, memory[count]);
+    //Allocate memory for next inpuyt
     memory = realloc(memory, sizeof(double) * (count + 1));
 
+    //Get operation
     printf("\nWhat operation do you want to use?\n");
     fgets(operations, 255, stdin);
     remove_crlf(operations);
 
+    //Print out first value and operation to tape
     fprintf(ofp, "%lf\n", first);
     fprintf(ofp, "%s\n", operations);
 
+    //Addition operation
     if (strcmp(operations, "+") == 0 || strcmp(operations, "addition") == 0)
     {
       count++;
@@ -333,6 +355,7 @@ void second_step(FILE *ofp, double *store, int count)
       printf("The result of %2.17lf + %2.17lf = %2.17lf\n", first, second, first + second);
       fprintf(ofp, "The result of %2.17lf + %2.17lf = %2.17lf\n", first, second, first + second);
     }
+    //Subtraction operation
     else if (strcmp(operations, "-") == 0 || strcmp(operations, "subtaction") == 0)
     {
       count++;
@@ -343,6 +366,7 @@ void second_step(FILE *ofp, double *store, int count)
       printf("The result of %2.17lf - %2.17lf = %2.17lf\n", first, second, first - second);
       fprintf(ofp, "The result of %2.17lf - %2.17lf = %2.17lf\n", first, second, first - second);
     }
+    //Multiplication operation
     else if (strcmp(operations, "x") == 0 || strcmp(operations, "multiplication") == 0 || strcmp(operations, "*") == 0)
     {
       count++;
@@ -353,6 +377,7 @@ void second_step(FILE *ofp, double *store, int count)
       printf("The result of %lf x %2.17lf = %2.17lf\n", first, second, first * second);
       fprintf(ofp, "The result of %2.17lf x %2.17lf = %2.17lf\n", first, second, first * second);
     }
+    //Division operation
     else if (strcmp(operations, "/") == 0 || strcmp(operations, "division") == 0)
     {
       count++;
@@ -371,6 +396,7 @@ void second_step(FILE *ofp, double *store, int count)
         fprintf(ofp, "The result of %2.17lf / %2.17lf = %2.17lf\n", first, second, first / second);
       }
     }
+    //Exponentiation operation
     else if (strcmp(operations, "^") == 0 || strcmp(operations, "exponentiation") == 0)
     {
       second = (first_step(ofp, memory, store, count));
@@ -379,6 +405,7 @@ void second_step(FILE *ofp, double *store, int count)
       printf("The result of %2.17lf ^ %2.17lf = %2.17lf\n", first, second, pow(first, second));
       fprintf(ofp, "The result of %2.17lf ^ %2.17lf = %2.17lf\n", first, second, pow(first, second));
     }
+    //Sine operation
     else if (strcmp(operations, "sin") == 0 || strcmp(operations, "sine") == 0)
     {
       count++;
@@ -386,6 +413,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, sine_value(first, ofp));
       first = sine_value(first, ofp);
     }
+    //Cosine operation
     else if (strcmp(operations, "cos") == 0 || strcmp(operations, "cosine") == 0)
     {
       count++;
@@ -393,6 +421,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, cosine_value(first, ofp));
       first = cosine_value(first, ofp);
     }
+    //Tangent operation
     else if (strcmp(operations, "tan") == 0 || strcmp(operations, "tangent") == 0)
     {
       count++;
@@ -400,6 +429,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, tangent_value(first, ofp));
       first = tangent_value(first, ofp);
     }
+    //Inverse sine operation
     else if (strcmp(operations, "arcsin") == 0 || strcmp(operations, "inverse sine") == 0)
     {
       count++;
@@ -407,6 +437,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, inverse_sine_value(first, ofp));
       first = inverse_sine_value(first, ofp);
     }
+    //Inverse cosine operation
     else if (strcmp(operations, "arccos") == 0 || strcmp(operations, "inverse cosine") == 0)
     {
       count++;
@@ -414,6 +445,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, inverse_cosine_value(first, ofp));
       first = inverse_cosine_value(first, ofp);
     }
+    //Inverse tangent operation
     else if (strcmp(operations, "arctan") == 0 || strcmp(operations, "inverse tangent") == 0)
     {
       count++;
@@ -421,6 +453,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, inverse_tangent_value(first, ofp));
       first = inverse_tangent_value(first, ofp);
     }
+    //Square roote operation
     else if (strcmp(operations, "root") == 0 || strcmp(operations, "square root") == 0)
     {
       count++;
@@ -428,6 +461,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, square_root_value(first, ofp));
       first = square_root_value(first, ofp);
     }
+    //Absolute value operation
     else if (strcmp(operations, "abs") == 0 || strcmp(operations, "remove sign") == 0)
     {
       count++;
@@ -435,6 +469,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, absolute_value_value(first, ofp));
       first = absolute_value_value(first, ofp);
     }
+    //Inverse operation
     else if (strcmp(operations, "inv") == 0 || strcmp(operations, "1/x") == 0)
     {
       count++;
@@ -442,6 +477,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, inverse_value(first, ofp));
       first = inverse_value(first, ofp);
     }
+    //Log base 10 operation
     else if (strcmp(operations, "log") == 0 || strcmp(operations, "log10x") == 0)
     {
       count++;
@@ -449,6 +485,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, log_10_value(first, ofp));
       first = log_10_value(first, ofp);
     }
+    //Log base 2 operation
     else if (strcmp(operations, "log2") == 0 || strcmp(operations, "log2x") == 0)
     {
       count++;
@@ -456,6 +493,7 @@ void second_step(FILE *ofp, double *store, int count)
       count = save(memory, count, log_2_value(first, ofp));
       first = log_2_value(first, ofp);
     }
+    //Print 0 and ask for new number
     else if (strcmp(operations, "c") == 0 || strcmp(operations, "clear") == 0)
     {
       first = 0;
@@ -463,6 +501,7 @@ void second_step(FILE *ofp, double *store, int count)
       fprintf(ofp, "0\n");
       first_step(ofp, memory, store, count);
     }
+    //Clear all memory stored
     else if (strcmp(operations, "ca") == 0 || strcmp(operations, "clear all") == 0)
     {
       clear_all(ofp, store);
@@ -470,10 +509,12 @@ void second_step(FILE *ofp, double *store, int count)
       fprintf(ofp, "All memory has been cleared.\n");
       first_step(ofp, memory, store, count);
     }
+    //Back function to get previous input or computation
     else if (strcmp(operations, "b") == 0 || strcmp(operations, "back") == 0)
     {
       first = back(ofp, memory, store, count);
     }
+    //Store last number in an inputted location
     else if (strcmp(operations, "sto") == 0 || strcmp(operations, "store") == 0)
     {
       char temp[256];
@@ -496,6 +537,7 @@ void second_step(FILE *ofp, double *store, int count)
         fprintf(ofp, "Error.\n");
       }
     }
+    //Recall memory from inputted location
     else if (strcmp(operations, "rcl") == 0 || strcmp(operations, "recall") == 0)
     {
       char temp[256];
@@ -518,10 +560,12 @@ void second_step(FILE *ofp, double *store, int count)
         fprintf(ofp, "Error.\n");
       }
     }
+    //Quit program by exiting while loop
     else if (strcmp(operations, "q") == 0 || strcmp(operations, "quit") == 0)
     {
       break;
     }
+    //Invalid operation
     else
     {
       printf("You have enetered an Invalid Operator \n");
@@ -529,6 +573,8 @@ void second_step(FILE *ofp, double *store, int count)
     }
   }
 
+  //Free memory
+  free(memory);
   fclose(ofp);
 }
 
@@ -538,6 +584,7 @@ int main()
   int count = 0;
   FILE *ofp = fopen("tape.txt", "w");
 
+  //Initialize and start with second step which calls first step
   second_step(ofp, store, count);
 
   fclose(ofp);

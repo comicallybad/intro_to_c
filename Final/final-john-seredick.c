@@ -408,90 +408,101 @@ void second_step(FILE *ofp, double *store, int count)
     //Sine operation
     else if (strcmp(operations, "sin") == 0 || strcmp(operations, "sine") == 0)
     {
+      double temp = sine_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, sine_value(first, ofp));
-      first = sine_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Cosine operation
     else if (strcmp(operations, "cos") == 0 || strcmp(operations, "cosine") == 0)
     {
+      double temp = cosine_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, cosine_value(first, ofp));
-      first = cosine_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Tangent operation
     else if (strcmp(operations, "tan") == 0 || strcmp(operations, "tangent") == 0)
     {
+      double temp = tangent_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, tangent_value(first, ofp));
-      first = tangent_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Inverse sine operation
     else if (strcmp(operations, "arcsin") == 0 || strcmp(operations, "inverse sine") == 0)
     {
+      double temp = inverse_sine_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, inverse_sine_value(first, ofp));
-      first = inverse_sine_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Inverse cosine operation
     else if (strcmp(operations, "arccos") == 0 || strcmp(operations, "inverse cosine") == 0)
     {
+      double temp = inverse_cosine_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, inverse_cosine_value(first, ofp));
-      first = inverse_cosine_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Inverse tangent operation
     else if (strcmp(operations, "arctan") == 0 || strcmp(operations, "inverse tangent") == 0)
     {
+      double temp = inverse_tangent_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, inverse_tangent_value(first, ofp));
-      first = inverse_tangent_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Square roote operation
     else if (strcmp(operations, "root") == 0 || strcmp(operations, "square root") == 0)
     {
+      double temp = square_root_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, square_root_value(first, ofp));
-      first = square_root_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Absolute value operation
     else if (strcmp(operations, "abs") == 0 || strcmp(operations, "remove sign") == 0)
     {
+      double temp = absolute_value_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, absolute_value_value(first, ofp));
-      first = absolute_value_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Inverse operation
     else if (strcmp(operations, "inv") == 0 || strcmp(operations, "1/x") == 0)
     {
+      double temp = inverse_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, inverse_value(first, ofp));
-      first = inverse_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Log base 10 operation
     else if (strcmp(operations, "log") == 0 || strcmp(operations, "log10x") == 0)
     {
+      double temp = log_10_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, log_10_value(first, ofp));
-      first = log_10_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Log base 2 operation
     else if (strcmp(operations, "log2") == 0 || strcmp(operations, "log2x") == 0)
     {
+      double temp = log_2_value(first, ofp);
       count++;
       memory = realloc(memory, sizeof(double) * count + 1);
-      count = save(memory, count, log_2_value(first, ofp));
-      first = log_2_value(first, ofp);
+      count = save(memory, count, temp);
+      first = temp;
     }
     //Print 0 and ask for new number
     else if (strcmp(operations, "c") == 0 || strcmp(operations, "clear") == 0)
